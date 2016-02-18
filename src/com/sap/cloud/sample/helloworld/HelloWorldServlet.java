@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 public class HelloWorldServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /** {@inheritDoc} */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().println("<p>Hello friend!</p>");
+        response.getWriter().println("<p>Hello friendd!</p>");
     }
 }
