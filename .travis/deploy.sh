@@ -1,5 +1,6 @@
 #!/bin/bash  
 APP_NAME=$1
+ls ./target
 NEO=./target/sdk/tools/neo.sh
 pwd
 echo Deploying "$APP_NAME"
