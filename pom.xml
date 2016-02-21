@@ -17,16 +17,8 @@
     <properties>
 		<jdk.version>1.6</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sap.hcp.sdk.version>2.78.13</sap.hcp.sdk.version>
 		<sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>  
 	</properties>
-	<dependencies>
-        <dependency>
-	        <groupId>com.sap.cloud</groupId>
-		<artifactId>neo-javaee6-wp-api</artifactId>
-		<version>${sap.hcp.sdk.version}</version>
-        </dependency>
-    </dependencies>
     <licenses>
         <license>
             <name>SAP DEVELOPER LICENSE AGREEMENT</name>
