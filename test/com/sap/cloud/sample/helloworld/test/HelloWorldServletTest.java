@@ -47,7 +47,7 @@ public class HelloWorldServletTest {
     /**
      * Example for a test using ServletUnit on a SAP HANA Cloud Platform application.
      */
-    @Test
+    //@Test
     public void testHelloWorldUsingServletUnit() throws IOException, SAXException {
         // Prepare servlet emulation environment
         ServletRunner sr = new ServletRunner();
