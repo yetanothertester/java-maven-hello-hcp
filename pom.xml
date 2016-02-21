@@ -23,7 +23,7 @@
 	<dependencies>
         <dependency>
 	        <groupId>com.sap.cloud</groupId>
-		<artifactId>neo-java-web-api</artifactId>
+		<artifactId>neo-javaee6-wp-api</artifactId>
 		<version>${sap.hcp.sdk.version}</version>
         </dependency>
     </dependencies>
