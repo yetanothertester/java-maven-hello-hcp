@@ -7,7 +7,7 @@
         <groupId>com.sap.cloud.sample</groupId>
         <artifactId>sdk-samples-parent</artifactId>
         <version>1.0.0</version>
-        <relativePath>..</relativePath>
+        <relativePath>../parent</relativePath>
     </parent>
 
     <artifactId>hello-world</artifactId>
