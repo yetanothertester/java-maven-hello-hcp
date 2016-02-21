@@ -2,4 +2,4 @@ sudo: false
 language: java
 jdk: oraclejdk7
 after_script:  
-  - if [[ $TRAVIS_PULL_REQUEST == 'false' && ]]; then bash .travis/deploy.sh $TRAVIS_BRANCH || exit $?; fi  
+  - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then bash .travis/deploy.sh $TRAVIS_BRANCH || exit $?; fi  
