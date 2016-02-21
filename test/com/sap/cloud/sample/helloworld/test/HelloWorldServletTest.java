@@ -27,7 +27,7 @@ public class HelloWorldServletTest {
     /**
      * Example for a test using EasyMock on a SAP HANA Cloud Platform application.
      */
-    @Test
+    //@Test
     public void testHelloWorldUsingEasyMock() throws IOException, SAXException, ServletException {
         // Create required mock objects
         HttpServletRequest mockRequest = EasyMock.createMock(HttpServletRequest.class);
