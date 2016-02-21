@@ -17,14 +17,14 @@
     <properties>
 		<jdk.version>1.6</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
 		<sap.hcp.sdk.version>1.43.20.3</sap.hcp.sdk.version>
+		<sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>  
 	</properties>
 	<dependencies>
         <dependency>
 	        <groupId>com.sap.cloud</groupId>
-			<artifactId>neo-java-web-api</artifactId>
-			<version>${sap.hcp.sdk.version}</version>
+		<artifactId>neo-java-web-api</artifactId>
+		<version>${sap.hcp.sdk.version}</version>
         </dependency>
     </dependencies>
     <licenses>
