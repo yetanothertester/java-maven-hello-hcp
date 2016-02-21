@@ -9,7 +9,7 @@ $NEO deploy -a "$ACCOUNT" \
     -h "$LANDSCAPE_HOST" \
     -u "$DEPLOY_USERNAME" \
     -p "$DEPLOY_PASSWORD" \
-    -s ./target/basecamp-1.0.0.war
+    -s ./target/hello-world.war
     
 echo "Restarting app...";
 
